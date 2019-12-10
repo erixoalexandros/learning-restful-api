@@ -1,5 +1,5 @@
 {
-  "name": "nodeapp",
+  "name": "vidly",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,6 +9,8 @@
   "author": "Erick Jordan",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "debug": "^4.1.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.14"
   }
 }

@@ -1,46 +1,29 @@
 const express = require("express");
-const courses = require("./courses");
-const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+
+mongoose
+  .connect("mongodb://localhost/vidly", {
+    //Fix all deprecation warnings
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  })
+  .then(() => console.log("Connected to MongoDB..."))
+  .catch(() => console.log("Could not connect to MongoDB..."));
 
 const app = express();
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.send(`
-  <form action="/api/courses/" method="post">
-    <input name="title" type="text" />
-    <input type="submit" />
-  </form>`);
-});
+// Routes
+const home = require("./routes/home");
+const genres = require("./routes/genres");
+const customers = require("./routes/customers");
+const movies = require("./routes/movies");
 
-app.get("/api/courses", (req, res) => {
-  res.send(courses);
-});
-
-app.get("/api/courses/:id", (req, res) => {
-  const course = courses.find(course => {
-    return course.id === parseInt(req.params.id);
-  });
-
-  if (course) {
-    res.send(course);
-  } else {
-    res.status(404);
-    res.send("Object not found");
-  }
-});
-
-app.post("/api/courses/", (req, res) => {
-  const newCourse = {
-    id: courses.length + 1,
-    title: req.body.title
-  };
-
-  courses.push(newCourse);
-  res.send(newCourse);
-  console.log(courses);
-});
+app.use("/", home);
+app.use("/api/genres", genres);
+app.use("/api/customers", customers);
+app.use("/api/movies", movies);
 
 const port = process.env.PORT || "3000";
 app.listen(port);

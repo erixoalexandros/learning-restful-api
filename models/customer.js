@@ -15,7 +15,7 @@ const Customer = mongoose.model("Customer", {
     type: String,
     required: true,
     unique: true,
-    validate: /^\d{10}$/g
+    validate: /^\d{10}$/
   }
 });
 
